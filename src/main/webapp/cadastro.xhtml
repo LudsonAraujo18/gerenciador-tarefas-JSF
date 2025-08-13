@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Cadastro</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #6dd5ed, #2193b0);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .cadastro-card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
+            width: 350px;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .p-field {
+            margin-bottom: 15px;
+        }
+    </style>
+</h:head>
+
+<h:body>
+    <div class="cadastro-card">
+        <h2>Criar Conta</h2>
+        <h:form>
+            <div class="p-field">
+                <p:inputText id="usuario" value="#{usuarioBean.login}" placeholder="Usuário" style="width:100%" />
+            </div>
+            <div class="p-field">
+                <p:password id="senha" value="#{usuarioBean.senha}" placeholder="Senha" style="width:100%" />
+            </div>
+            <p:commandButton value="Cadastrar" action="#{usuarioBean.cadastrar}" styleClass="ui-button-success" style="width:100%" />
+            <p:button value="Voltar" outcome="login.xhtml" styleClass="ui-button-secondary" style="width:100%; margin-top:10px" />
+        </h:form>
+    </div>
+</h:body>
+</html>

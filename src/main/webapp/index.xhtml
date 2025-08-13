@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Minhas Tarefas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f6fa;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #2f3640;
+            margin-bottom: 20px;
+        }
+        .btn-top {
+            margin-bottom: 15px;
+            text-align: right;
+        }
+        .prioridade-alta {
+            color: white;
+            background-color: #e84118;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .prioridade-media {
+            color: white;
+            background-color: #e1b12c;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .prioridade-baixa {
+            color: white;
+            background-color: #44bd32;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .filtro-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr) auto;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+    </style>
+</h:head>
+
+<h:body>
+    <div class="container">
+        <h:form id="formTarefas">
+            <h2>Minhas Tarefas</h2>
+
+            <!-- Botão Nova Tarefa -->
+            <div class="btn-top">
+                <p:button value="Nova Tarefa" outcome="nova_tarefa.xhtml"
+                          icon="pi pi-plus" styleClass="ui-button-success" />
+            </div>
+
+            <!-- Filtros -->
+            <p:panel header="Filtros" style="margin-bottom:15px;">
+                <div class="filtro-grid">
+                    <p:inputText placeholder="Número (ID)" value="#{tarefaBean.filtroNumero}" />
+                    <p:inputText placeholder="Título" value="#{tarefaBean.filtroTitulo}" />
+                    <p:inputText placeholder="Responsável" value="#{tarefaBean.filtroResponsavel}" />
+
+                    <p:selectOneMenu value="#{tarefaBean.filtroStatus}">
+                        <f:selectItem itemLabel="Todos" itemValue="" />
+                        <f:selectItems value="#{tarefaBean.statusDisponiveis}" />
+                    </p:selectOneMenu>
+
+                    <p:commandButton value="Buscar" action="#{tarefaBean.filtrar}"
+                                     update="tabelaTarefas" icon="pi pi-search"
+                                     styleClass="ui-button-info" />
+                </div>
+            </p:panel>
+
+            <!-- Tabela de Tarefas -->
+            <p:dataTable id="tabelaTarefas" value="#{tarefaBean.tarefasFiltradas}" var="t"
+                         paginator="true" rows="5" responsiveLayout="scroll"
+                         emptyMessage="Nenhuma tarefa encontrada">
+
+                <p:column headerText="Número">
+                    #{t.id}
+                </p:column>
+
+                <p:column headerText="Título">
+                    #{t.titulo}
+                </p:column>
+
+                <p:column headerText="Descrição">
+                    #{t.descricao}
+                </p:column>
+
+                <p:column headerText="Responsável">
+                    #{t.responsavel}
+                </p:column>
+
+                <p:column headerText="Prioridade">
+                    <h:outputText value="#{t.prioridade}"
+                                  styleClass="#{t.prioridade eq 'ALTA' ? 'prioridade-alta' :
+                                            t.prioridade eq 'MEDIA' ? 'prioridade-media' :
+                                            'prioridade-baixa'}" />
+                </p:column>
+
+                <p:column headerText="Prazo">
+                    <h:outputText value="#{t.deadline}">
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="Ações" style="text-align:center">
+                    <p:commandButton value="Editar"
+                                     action="#{tarefaBean.editar(t)}"
+                                     icon="pi pi-pencil"
+                                     update="@form"/>
+
+                    <p:commandButton value="Concluir"
+                                     action="#{tarefaBean.concluirTarefa(t)}"
+                                     icon="pi pi-check"
+                                     styleClass="ui-button-success"
+                                     update="@form"
+                                     rendered="#{t.status ne 'Concluída'}" />
+
+                    <p:commandButton value="Remover"
+                                     actionListener="#{tarefaBean.excluir(t)}"
+                                     update="tabelaTarefas"
+                                     process="@this"
+                                     icon="pi pi-trash" />
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </div>
+</h:body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+    <title>#{tarefaBean.editando ? 'Editar Tarefa' : 'Nova Tarefa'}</title>
+    <h:outputStylesheet>
+        body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f6f9;
+        }
+        .form-container {
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        width: 500px;
+        margin: 50px auto;
+        }
+        h2 {
+        color: #333;
+        text-align: center;
+        }
+    </h:outputStylesheet>
+</h:head>
+
+<h:body>
+    <div class="form-container">
+        <h2>#{tarefaBean.editando ? 'Editar Tarefa' : 'Nova Tarefa'}</h2>
+
+        <h:form>
+            <p:messages autoUpdate="true" closable="true"/>
+
+            <p:panelGrid columns="2" columnClasses="label,value" style="width:100%">
+
+                <h:outputLabel value="Título:" for="titulo"/>
+                <p:inputText id="titulo"
+                             value="#{tarefaBean.tarefa.titulo}"
+                             required="true"
+                             requiredMessage="Informe o título"/>
+
+                <h:outputLabel value="Descrição:" for="descricao"/>
+                <p:inputTextarea id="descricao"
+                                 value="#{tarefaBean.tarefa.descricao}"
+                                 rows="3"
+                                 autoResize="true"/>
+
+                <h:outputLabel value="Responsável:" for="responsavel"/>
+                <p:inputText id="responsavel"
+                             value="#{tarefaBean.tarefa.responsavel}"/>
+
+                <h:outputLabel value="Prioridade:" for="prioridade"/>
+                <p:selectOneMenu id="prioridade"
+                                 value="#{tarefaBean.tarefa.prioridade}"
+                                 required="true"
+                                 requiredMessage="Selecione a prioridade">
+                    <f:selectItems value="#{tarefaBean.prioridades}"
+                                   var="p"
+                                   itemLabel="#{p.label}"
+                                   itemValue="#{p}"/>
+                    <f:converter converterId="prioridadeConverter"/>
+                </p:selectOneMenu>
+
+                <h:outputLabel value="Prazo:" for="prazo"/>
+                <p:calendar id="prazo"
+                            value="#{tarefaBean.tarefa.deadline}"
+                            pattern="dd/MM/yyyy"
+                            locale="pt"
+                            navigator="true"
+                            showButtonPanel="true"
+                            required="true"
+                            requiredMessage="Selecione o prazo"/>
+            </p:panelGrid>
+
+            <br/>
+
+            <!-- Botão muda entre Salvar e Atualizar -->
+            <p:commandButton value="#{tarefaBean.editando ? 'Atualizar' : 'Salvar'}"
+                             action="#{tarefaBean.salvarOuAtualizar}"
+                             icon="pi pi-check"
+                             styleClass="ui-button-success"
+                             ajax="false" />
+
+            <!-- Botão Cancelar -->
+            <p:button value="Cancelar"
+                      outcome="index.xhtml"
+                      icon="pi pi-times"
+                      styleClass="ui-button-secondary" />
+        </h:form>
+    </div>
+
+    <!-- Locale PT-BR -->
+    <h:outputScript>
+        PrimeFaces.locales['pt'] = {
+        closeText: 'Fechar',
+        prevText: 'Anterior',
+        nextText: 'Próximo',
+        currentText: 'Hoje',
+        monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+        monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'],
+        dayNames: ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'],
+        dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'],
+        dayNamesMin: ['D','S','T','Q','Q','S','S'],
+        weekHeader: 'Semana',
+        firstDay: 0,
+        isRTL: false,
+        showMonthAfterYear: false,
+        yearSuffix: '',
+        timeOnlyTitle: 'Só Horas',
+        timeText: 'Hora',
+        hourText: 'Horas',
+        minuteText: 'Minutos',
+        secondText: 'Segundos',
+        ampm: false,
+        month: 'Mês',
+        week: 'Semana',
+        day: 'Dia',
+        allDayText: 'Todo o Dia'
+        };
+    </h:outputScript>
+</h:body>
+</html>

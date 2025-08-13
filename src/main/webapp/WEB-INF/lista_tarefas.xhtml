@@ -1,0 +1,53 @@
+<h:form>
+    <h:panelGrid columns="2" cellpadding="5">
+
+        <h:outputLabel for="resp" value="Responsável:"/>
+        <h:inputText id="resp" value="#{tarefaBean.filtroResponsavel}" placeholder="Digite o nome do responsável" />
+
+        <h:outputLabel for="prioridade" value="Prioridade:"/>
+        <h:selectOneMenu id="prioridade" value="#{tarefaBean.filtroPrioridade}">
+            <f:selectItem itemValue="" itemLabel="Todas"/>
+            <f:selectItem itemValue="Alta" itemLabel="Alta"/>
+            <f:selectItem itemValue="Média" itemLabel="Média"/>
+            <f:selectItem itemValue="Baixa" itemLabel="Baixa"/>
+        </h:selectOneMenu>
+
+        <h:outputLabel for="situacao" value="Situação:"/>
+        <h:selectOneMenu id="situacao" value="#{tarefaBean.filtroSituacao}">
+            <f:selectItem itemValue="" itemLabel="Todas"/>
+            <f:selectItem itemValue="Em andamento" itemLabel="Em andamento"/>
+            <f:selectItem itemValue="Concluída" itemLabel="Concluída"/>
+        </h:selectOneMenu>
+
+        <h:outputLabel />
+        <h:commandButton value="Filtrar" action="#{tarefaBean.aplicarFiltros}" />
+    </h:panelGrid>
+
+    <h:dataTable value="#{tarefaBean.tarefasFiltradas}" var="t" border="1" cellpadding="5">
+        <h:column>
+            <f:facet name="header">Título</f:facet>
+            #{t.titulo}
+        </h:column>
+        <h:column>
+            <f:facet name="header">Responsável</f:facet>
+            #{t.responsavel}
+        </h:column>
+        <h:column>
+            <f:facet name="header">Prioridade</f:facet>
+            #{t.prioridade}
+        </h:column>
+        <h:column>
+            <f:facet name="header">Situação</f:facet>
+            #{t.situacao}
+        </h:column>
+        <h:column>
+            <f:facet name="header">Ações</f:facet>
+            <h:commandLink value="Editar" action="#{tarefaBean.editar(t)}" />
+            <h:outputText value=" | " />
+            <h:commandLink value="Excluir" action="#{tarefaBean.excluir(t)}" />
+            <h:outputText value=" | " />
+            <h:commandLink value="Concluir" action="#{tarefaBean.concluir(t)}"
+                           rendered="#{t.situacao eq 'Em andamento'}" />
+        </h:column>
+    </h:dataTable>
+</h:form>
