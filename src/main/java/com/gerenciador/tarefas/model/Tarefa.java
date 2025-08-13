@@ -2,7 +2,7 @@ package com.gerenciador.tarefas.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "tarefas")
@@ -21,8 +21,8 @@ public class Tarefa implements Serializable {
     @Enumerated(EnumType.STRING)
     private Prioridade prioridade;
 
-    @Temporal(TemporalType.DATE)
-    private Date deadline;
+    // Agora usamos LocalDate (sem @Temporal)
+    private LocalDate deadline;
 
     @Column(length = 20)
     private String status;
@@ -31,6 +31,7 @@ public class Tarefa implements Serializable {
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
+    // Getters e Setters
     public Long getId() {
         return id;
     }
@@ -66,10 +67,10 @@ public class Tarefa implements Serializable {
         this.prioridade = prioridade;
     }
 
-    public Date getDeadline() {
+    public LocalDate getDeadline() {
         return deadline;
     }
-    public void setDeadline(Date deadline) {
+    public void setDeadline(LocalDate deadline) {
         this.deadline = deadline;
     }
 
